@@ -1,0 +1,23 @@
+import { readFile, writeFile, mkdir, rm } from 'node:fs/promises';
+import { execFileSync } from 'node:child_process';
+import { resolve } from 'node:path';
+const root = resolve(import.meta.dirname, '..');
+process.chdir(root);
+const analytics = await readFile('lib/analytics.js', 'utf8');
+const collector = await readFile('lib/collector.js', 'utf8');
+const worker = await readFile('worker/index.js', 'utf8');
+const snapshot = JSON.parse(await readFile('data/snapshot.json', 'utf8'));
+await rm('dist', { recursive: true, force: true });
+await mkdir('dist/server', { recursive: true }); await mkdir('dist/.openai', { recursive: true });
+await mkdir('artifacts', { recursive: true });
+execFileSync('python3', ['scripts/source-zip.py']);
+const zip = await readFile('artifacts/stoa-flow-source.zip');
+const assets = {};
+for (const [path, type] of [['index.html', 'text/html; charset=utf-8'], ['style.css', 'text/css; charset=utf-8'], ['app.js', 'text/javascript; charset=utf-8']]) assets[path] = { content: await readFile('web/' + path, 'utf8'), type };
+assets['analytics.js'] = { content: analytics, type: 'text/javascript; charset=utf-8' };
+const removeImports = s => s.replace(/^import .*;\n/gm, '');
+const output = 'const ASSETS = ' + JSON.stringify(assets) + ';\nconst SNAPSHOT = ' + JSON.stringify(snapshot) + ';\nconst SOURCE_ZIP = ' + JSON.stringify(zip.toString('base64')) + ';\n' +
+  removeImports(analytics).replace(/^export /gm, '') + '\n' + removeImports(collector).replace(/^export /gm, '') + '\n' + removeImports(worker);
+await writeFile('dist/server/index.js', output);
+await writeFile('dist/.openai/hosting.json', await readFile('.openai/hosting.json'));
+console.log('Built single-file Worker with ' + snapshot.logs.length + ' real on-chain events; source archive ' + zip.length + ' bytes.');

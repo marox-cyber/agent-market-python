@@ -1,0 +1,12 @@
+{
+  "name": "stoa-flow",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "bash scripts/build.sh",
+    "dev": "node scripts/dev.mjs",
+    "collect": "node scripts/collect.mjs",
+    "test": "node --test test/*.test.mjs",
+    "validate": "node scripts/validate-artifact.mjs"
+  }
+}
