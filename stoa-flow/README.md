@@ -51,7 +51,7 @@ Submission is requested through a GitHub issue in StoaDex/Stoa. Acceptance and p
 
 ## Validation
 
-Eight analytics tests cover independent integer-volume reconciliation against real logs, duplicate logs, removed logs, missing/mismatched block headers, mixed-venue accounting, unpriced events, filter/time boundaries and CSV safety. Worker tests verify routes, the source archive and upstream-failure fallback. Collector tests verify chain identity and that a 429 is not immediately retried (15 tests total). Browser checks cover range filters, chart switching, token search, empty states and methodology navigation.
+Eight analytics tests cover independent integer-volume reconciliation against real logs, duplicate logs, removed logs, missing/mismatched block headers, mixed-venue accounting, unpriced events, filter/time boundaries and CSV safety. Worker tests verify routes, the source archive and upstream-failure fallback. Collector tests verify chain identity, that a 429 is not immediately retried, and catch-up collection under a 10,001-block provider limit (16 tests total). Browser checks cover range filters, chart switching, token search, empty states and methodology navigation.
 
 ## License
 

@@ -6,7 +6,7 @@ let verified = false;
 let inFlight = null;
 let lastError = null;
 let lastAttempt = 0;
-const headers = { 'x-stoa-flow-build': '20261120-4', 'x-content-type-options': 'nosniff', 'referrer-policy': 'strict-origin-when-cross-origin',
+const headers = { 'x-stoa-flow-build': '20261120-5', 'x-content-type-options': 'nosniff', 'referrer-policy': 'strict-origin-when-cross-origin',
   'content-security-policy': "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; frame-ancestors 'self'; base-uri 'self'; object-src 'none'" };
 const json = (data, status = 200) => new Response(JSON.stringify(data), { status, headers: { ...headers, 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' } });
 async function dataset(force = false) {
